@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Home - Budget Off Track</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            appBg: '#F8F9FA',
+            cardBg: '#FFFFFF',
+            borderSubtle: '#F0F1F3',
+            textPrimary: '#111827',
+            textSecondary: '#6B7280',
+            textMuted: '#9CA3AF',
+            dangerRed: '#EF4444',
+            dangerBg: '#FEF2F2'
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Style block for custom mobile preview styles -->
+<style data-purpose="mobile-frame">
+    body {
+      background-color: #E5E7EB;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-0 sm:py-6 sm:px-4 font-sans text-textPrimary">
+<!-- BEGIN: PhoneShellWrapper -->
+<!-- Container mimicking an iPhone viewport -->
+<main class="w-full max-w-[393px] h-[852px] max-h-screen sm:max-h-[852px] bg-cardBg sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col relative border border-gray-200 sm:border-gray-300" data-purpose="mobile-screen-container">
+<!-- BEGIN: iOSStatusBar -->
+<header class="w-full pt-3 px-7 pb-2 flex justify-between items-center bg-cardBg z-30 select-none" data-purpose="ios-status-bar">
+<!-- Time indicator -->
+<span class="text-[15px] font-semibold tracking-tight text-black">9:41</span>
+<!-- Right-side status icons (Signal, Wi-Fi, Battery) -->
+<div class="flex items-center space-x-1.5 text-black">
+<!-- Cellular Signal Icon -->
+<svg class="w-4 h-3 fill-current" viewbox="0 0 17 11">
+<rect height="3.5" rx="0.6" width="2.5" x="0" y="7.5"></rect>
+<rect height="5.8" rx="0.6" width="2.5" x="3.8" y="5.2"></rect>
+<rect height="8.2" rx="0.6" width="2.5" x="7.6" y="2.8"></rect>
+<rect height="11" rx="0.6" width="2.5" x="11.4" y="0"></rect>
+</svg>
+<!-- Wi-Fi Icon -->
+<svg class="w-4 h-3 fill-current" viewbox="0 0 16 12">
+<path d="M8 2.6c2.4 0 4.6.9 6.2 2.4l1.3-1.4C13.6 1.8 10.9.8 8 .8S2.4 1.8.5 3.6L1.8 5C3.4 3.5 5.6 2.6 8 2.6zm0 4.1c1.5 0 2.9.6 3.9 1.6l1.3-1.4C11.8 5.6 10 4.8 8 4.8S4.2 5.6 2.8 6.9l1.3 1.4c1-1 2.4-1.6 3.9-1.6zm0 4.2c.9 0 1.6.7 1.6 1.6 0 .9-.7 1.6-1.6 1.6s-1.6-.7-1.6-1.6c0-.9.7-1.6 1.6-1.6z"></path>
+</svg>
+<!-- Battery Icon -->
+<div class="flex items-center">
+<div class="w-5 h-2.5 rounded-[4px] border border-black p-0.5 flex items-center">
+<div class="h-full w-full bg-black rounded-[1.5px]"></div>
+</div>
+<div class="w-0.5 h-1 bg-black rounded-r-sm -ml-px"></div>
+</div>
+</div>
+</header>
+<!-- END: iOSStatusBar -->
+<!-- BEGIN: ScrollableContent -->
+<div class="flex-1 overflow-y-auto px-5 pt-1 pb-24 hide-scrollbar space-y-4" data-purpose="scrollable-screen-body">
+<!-- BEGIN: UserGreetingHeader -->
+<section class="flex justify-between items-start pt-1" data-purpose="greeting-section">
+<div>
+<p class="text-[13px] text-textSecondary font-medium leading-none mb-1.5">Good morning</p>
+<p class="text-sm font-semibold text-textPrimary tracking-tight">10 Sep – 9 Oct</p>
+</div>
+<div class="flex flex-col items-end">
+<!-- Notification Bell Icon -->
+<button aria-label="Notifications" class="p-0.5 text-textPrimary hover:text-gray-600 transition-colors" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<span class="text-xs text-textSecondary font-medium mt-1">11 days left</span>
+</div>
+</section>
+<!-- END: UserGreetingHeader -->
+<!-- BEGIN: SafeToSpendCard -->
+<section class="bg-cardBg rounded-2xl border border-gray-100 p-4 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] cursor-pointer" data-purpose="safe-to-spend-card">
+<!-- STS Header Row -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5 text-textSecondary text-[13px] font-normal">
+<span>Safe to Spend</span>
+<!-- Info Icon -->
+<svg class="w-3.5 h-3.5 text-textMuted" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M12 16v-4m0-4h.01" stroke-linecap="round"></path>
+</svg>
+</div>
+<!-- Right Chevron -->
+<svg class="w-4 h-4 text-textSecondary" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- STS Main Number -->
+<div class="mt-1">
+<h2 class="text-[26px] font-bold tracking-tight text-textPrimary leading-tight">Rp2.250.000</h2>
+<p class="text-[12.5px] text-textSecondary font-normal mt-0.5">≈ Rp204.545 / day</p>
+</div>
+<!-- Horizontal Divider -->
+<div class="border-t border-gray-100 my-3.5"></div>
+<!-- STS Financial Summary -->
+<div class="flex justify-between items-center text-xs">
+<div>
+<span class="text-textSecondary block text-[11.5px]">Available</span>
+<span class="font-semibold text-textPrimary text-[12.5px]">Rp8.750.000</span>
+</div>
+<div class="text-right">
+<span class="text-textSecondary block text-[11.5px]">Unallocated</span>
+<span class="font-semibold text-textPrimary text-[12.5px]">Rp1.500.000</span>
+</div>
+</div>
+</section>
+<!-- END: SafeToSpendCard -->
+<!-- BEGIN: AlertCardBudgetOffTrack -->
+<!-- Warning Alert: Jajan is ahead of plan -->
+<section class="rounded-2xl border border-red-100 bg-[#FFF9F9] p-3.5 flex items-center justify-between cursor-pointer" data-purpose="budget-overspend-alert">
+<div class="flex items-start space-x-3 pr-2">
+<!-- Circular Warning Icon -->
+<div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center shrink-0 mt-0.5 text-white shadow-sm">
+<!-- Exclamation Point Inside Circle -->
+<span class="font-bold text-sm leading-none">!</span>
+</div>
+<!-- Alert Details -->
+<div class="flex-1">
+<h3 class="text-[13.5px] font-semibold text-textPrimary leading-snug">Jajan is ahead of plan</h3>
+<p class="text-[12px] text-textSecondary font-normal leading-tight mt-0.5">85% budget used · 58% cycle elapsed</p>
+<p class="text-[11.5px] font-medium text-red-500 mt-1.5 flex items-center gap-1">
+<span class="text-textSecondary font-normal">Projected overspend</span>
+<span class="font-semibold text-red-500">Rp570.000</span>
+</p>
+</div>
+</div>
+<!-- Chevron Icon -->
+<svg class="w-4 h-4 text-textSecondary shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewbox="0 0 24 24">
+<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</section>
+<!-- END: AlertCardBudgetOffTrack -->
+<!-- BEGIN: BudgetsSection -->
+<section class="pt-1" data-purpose="budgets-section">
+<!-- Section Header -->
+<div class="flex justify-between items-center mb-2.5">
+<h3 class="text-[14.5px] font-bold text-textPrimary tracking-tight">Budgets</h3>
+<a class="text-[12.5px] text-textSecondary font-medium hover:text-textPrimary" href="#">See all</a>
+</div>
+<!-- Budgets Card List Container -->
+<div class="space-y-3">
+<!-- Item 1: Jajan (Warning/Red Progress) -->
+<div class="flex items-center justify-between" data-purpose="budget-item-jajan">
+<div class="flex items-center space-x-3 flex-1 min-w-0 mr-3">
+<!-- Food/Coffee Category Icon -->
+<div class="w-8 h-8 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-textSecondary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-1.8v1.8a2.25 2.25 0 01-2.25 2.25H8.25A2.25 2.25 0 016 16.5v-1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Name & Progress Bar -->
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-medium text-textPrimary leading-tight">Jajan</p>
+<!-- Red indicator progress bar -->
+<div class="w-full bg-gray-100 rounded-full h-1.5 mt-1.5 overflow-hidden">
+<div class="bg-red-500 h-1.5 rounded-full" style="width: 85%;"></div>
+</div>
+<p class="text-[11px] text-textSecondary mt-1 leading-none font-normal">
+<span class="text-red-500 font-medium">Rp1.275.000</span> / Rp1.500.000
+                </p>
+</div>
+</div>
+<!-- Percentage badge -->
+<span class="text-[13.5px] font-bold text-textPrimary">85%</span>
+</div>
+<!-- Item 2: Transport (Normal Progress) -->
+<div class="flex items-center justify-between" data-purpose="budget-item-transport">
+<div class="flex items-center space-x-3 flex-1 min-w-0 mr-3">
+<!-- Car/Transport Category Icon -->
+<div class="w-8 h-8 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-textSecondary shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.25H4.875c-.621 0-1.125.504-1.125 1.125v6.75" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<!-- Name & Progress Bar -->
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-medium text-textPrimary leading-tight">Transport</p>
+<!-- Normal dark progress bar -->
+<div class="w-full bg-gray-100 rounded-full h-1.5 mt-1.5 overflow-hidden">
+<div class="bg-gray-400 h-1.5 rounded-full" style="width: 38%;"></div>
+</div>
+<p class="text-[11px] text-textSecondary mt-1 leading-none font-normal">
+<span>Rp190.000</span> / Rp500.000
+                </p>
+</div>
+</div>
+<!-- Percentage badge -->
+<span class="text-[13.5px] font-bold text-textPrimary">38%</span>
+</div>
+</div>
+</section>
+<!-- END: BudgetsSection -->
+<!-- BEGIN: UpcomingSection -->
+<section class="pt-1" data-purpose="upcoming-section">
+<!-- Section Header -->
+<div class="flex justify-between items-center mb-2.5">
+<h3 class="text-[14.5px] font-bold text-textPrimary tracking-tight">Upcoming</h3>
+<a class="text-[12.5px] text-textSecondary font-medium hover:text-textPrimary" href="#">See all</a>
+</div>
+<!-- Upcoming List -->
+<div class="space-y-3">
+<!-- Upcoming Item 1: 3 Oct Credit Card -->
+<div class="flex items-center justify-between text-xs" data-purpose="upcoming-item-credit-card">
+<div class="flex items-center space-x-3.5">
+<span class="text-textSecondary text-[12px] font-normal w-9">3 Oct</span>
+<span class="font-medium text-textPrimary text-[13px]">Credit Card</span>
+</div>
+<span class="font-semibold text-textPrimary text-[13px]">Rp850.000</span>
+</div>
+<!-- Upcoming Item 2: 5 Oct Internet -->
+<div class="flex items-center justify-between text-xs" data-purpose="upcoming-item-internet">
+<div class="flex items-center space-x-3.5">
+<span class="text-textSecondary text-[12px] font-normal w-9">5 Oct</span>
+<span class="font-medium text-textPrimary text-[13px]">Internet</span>
+</div>
+<span class="font-semibold text-textPrimary text-[13px]">Rp350.000</span>
+</div>
+</div>
+</section>
+<!-- END: UpcomingSection -->
+</div>
+<!-- END: ScrollableContent -->
+<!-- BEGIN: BottomNavigationBar -->
+<nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-3 pt-2 pb-6 flex justify-around items-center z-40" data-purpose="ios-bottom-tab-bar">
+<!-- Tab 1: Home (Active) -->
+<button class="flex flex-col items-center justify-center flex-1 text-black transition-colors" data-purpose="tab-home">
+<!-- Home Icon -->
+<svg class="w-5 h-5 fill-current" viewbox="0 0 20 20">
+<path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+</svg>
+<span class="text-[10px] font-bold mt-1 tracking-tight">Home</span>
+</button>
+<!-- Tab 2: Transactions -->
+<button class="flex flex-col items-center justify-center flex-1 text-textMuted hover:text-textSecondary transition-colors" data-purpose="tab-transactions">
+<!-- Transactions / List Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1 tracking-tight">Transactions</span>
+</button>
+<!-- Tab 3: Center FAB (+) -->
+<div class="flex flex-col items-center justify-center flex-1" data-purpose="tab-center-fab">
+<button aria-label="Add transaction" class="w-10 h-10 rounded-full bg-gray-500 hover:bg-gray-600 text-white flex items-center justify-center shadow-md active:scale-95 transition-transform">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24">
+<path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- Tab 4: Budget -->
+<button class="flex flex-col items-center justify-center flex-1 text-textMuted hover:text-textSecondary transition-colors" data-purpose="tab-budget">
+<!-- Budget / Chart Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1 tracking-tight">Budget</span>
+</button>
+<!-- Tab 5: Accounts -->
+<button class="flex flex-col items-center justify-center flex-1 text-textMuted hover:text-textSecondary transition-colors" data-purpose="tab-accounts">
+<!-- Accounts / Wallet Icon -->
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-[10px] font-medium mt-1 tracking-tight">Accounts</span>
+</button>
+</nav>
+<!-- END: BottomNavigationBar -->
+<!-- BEGIN: iOSHomeIndicator -->
+<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-black rounded-full pointer-events-none z-50" data-purpose="ios-home-indicator"></div>
+<!-- END: iOSHomeIndicator -->
+</main>
+<!-- END: PhoneShellWrapper -->
+</body></html>

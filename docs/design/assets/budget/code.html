@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Manage Budget - Personal Finance</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ios: {
+              bg: '#F8F9FA',
+              card: '#FFFFFF',
+              border: '#E5E7EB',
+              text: '#111827',
+              subtext: '#6B7280',
+              danger: '#EF4444',
+              dangerLight: '#FEF2F2',
+              dangerText: '#DC2626',
+              barBg: '#E5E7EB',
+              activeTab: '#111827'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom styles for iOS frame and native micro-details -->
+<style data-purpose="custom-styling">
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    /* Hide scrollbar for clean app shell feel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-0 sm:p-4 text-ios-text antialiased font-sans">
+<!-- BEGIN: MobileDeviceFrame -->
+<main class="w-full max-w-[393px] h-[852px] bg-white sm:rounded-[48px] sm:shadow-2xl overflow-hidden flex flex-col relative border border-gray-200">
+<!-- BEGIN: iOSStatusBar -->
+<header class="w-full pt-3 px-7 pb-2 flex justify-between items-center text-sm font-semibold tracking-tight z-30 select-none bg-white">
+<!-- Time display -->
+<span class="">9:41</span>
+<!-- Native status icons: Cellular, WiFi, Battery -->
+<div aria-label="Status Indicators" class="flex items-center space-x-1.5">
+<!-- Cellular Signal -->
+<svg class="w-4 h-3.5 fill-current" viewBox="0 0 17 12">
+<rect height="3.5" rx="0.5" width="2.5" x="0" y="8.5"></rect>
+<rect height="6" rx="0.5" width="2.5" x="4.5" y="6"></rect>
+<rect height="9" rx="0.5" width="2.5" x="9" y="3"></rect>
+<rect height="12" rx="0.5" width="2.5" x="13.5" y="0"></rect>
+</svg>
+<!-- Wi-Fi -->
+<svg class="w-4 h-3.5 fill-current" viewBox="0 0 16 12">
+<path d="M8 2.8c2.8 0 5.3 1.1 7.2 2.9l-1.3 1.3C12.3 5.4 10.3 4.5 8 4.5s-4.3.9-5.9 2.5L.8 5.7C2.7 3.9 5.2 2.8 8 2.8zm0 4.2c1.7 0 3.2.7 4.3 1.8L8 13.1 3.7 8.8C4.8 7.7 6.3 7 8 7z"></path>
+</svg>
+<!-- Battery with outline and fill -->
+<div class="flex items-center">
+<div class="w-5 h-2.5 border border-black rounded-[3px] p-[1px] flex items-center">
+<div class="h-full w-full bg-black rounded-[1.5px]"></div>
+</div>
+<div class="w-[1px] h-1 bg-black rounded-r-sm -ml-[0.5px]"></div>
+</div>
+</div>
+</header>
+<!-- END: iOSStatusBar -->
+<!-- Scrollable Content Viewport -->
+<div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-24" data-purpose="screen-content">
+<!-- BEGIN: HeaderSection -->
+<div class="pt-2 pb-4">
+<!-- Title & Notification Bell -->
+<div class="flex justify-between items-center mb-1.5">
+<h1 class="text-2xl font-bold tracking-tight text-gray-900">Budget</h1>
+<button aria-label="Notifications" class="p-1.5 -mr-1.5 text-gray-800 hover:text-gray-600 transition-colors" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+<path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+<!-- Cycle Subheader & Days Left -->
+<div class="flex justify-between items-center text-xs font-normal text-gray-500"><div class="flex flex-col gap-1 w-full"><div class="flex justify-between items-center text-xs text-gray-500"><span class="font-medium text-gray-900">10 Sep – 9 Oct</span><span class="bg-gray-100 text-gray-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">11 days left</span></div><div class="flex items-center text-[11px] text-gray-500 gap-1.5 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span><span class="">Cycle: 19 of 30 days (63% elapsed)</span></div></div></div>
+</div>
+<!-- END: HeaderSection -->
+<!-- BEGIN: TotalBudgetCard -->
+<section aria-labelledby="total-budget-heading" class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm mb-4" data-purpose="total-budget-summary"><div class="flex items-center justify-between mb-1"><p class="text-xs text-gray-500 font-medium" id="total-budget-heading">Total Budget</p></div><div class="text-2xl font-bold tracking-tight text-gray-900 mb-2.5">Rp3.000.000</div><div class="flex items-center gap-1.5 text-xs font-semibold text-red-500 bg-red-50/50 py-1.5 px-2.5 rounded-xl border border-red-100"><svg class="w-3.5 h-3.5 fill-current flex-shrink-0" viewBox="0 0 20 20"><path clip-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path></svg><span class="">Rp1.000.000 over your flexible money</span></div><div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center gap-2 text-xs text-slate-500 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5"><svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"></path></svg><span class="font-medium leading-tight">Projection available after more spending history (Day 3)</span></div></section>
+<!-- END: TotalBudgetCard -->
+<!-- BEGIN: BudgetItemList -->
+<section aria-label="Budget Categories" class="space-y-3" data-purpose="budget-items-list">
+<!-- Budget Item 1: Jajan (Warning/Exceeded indicator) -->
+<article class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm" data-purpose="budget-item"><div class="flex items-start justify-between"><div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center text-red-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 18" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6 13.5h12" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div><div class="flex items-center gap-1.5"><h2 class="text-sm font-bold text-gray-900 leading-tight">Jajan</h2></div><p class="text-xs text-red-500 font-semibold mt-0.5">Rp1.275.000 spent · 85%</p></div></div><div class="text-right"><span class="text-xs font-semibold text-gray-900">Rp1.500.000</span><p class="text-[10px] text-gray-400 mt-0.5">allocated</p></div></div><div class="w-full bg-gray-200 h-1.5 rounded-full mt-3 overflow-hidden"><div class="bg-red-500 h-full rounded-full" style="width: 85%;"></div></div><div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between"><span class="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full"><span class="">⚠️</span> AHEAD OF PLAN • 85% spent vs 63% cycle</span><span class="text-[10px] font-medium text-red-600">+22% pace</span></div></article>
+<!-- Budget Item 2: Transport -->
+<article class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm" data-purpose="budget-item"><div class="flex items-start justify-between"><div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M8 17h8M8 17a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 114 0 2 2 0 01-4 0zM4 11V6a2 2 0 012-2h12a2 2 0 012 2v5m-16 0h16m-16 0a2 2 0 00-2 2v2a2 2 0 002 2h16a2 2 0 002-2v-2a2 2 0 00-2-2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div><div class="flex items-center gap-1.5"><h2 class="text-sm font-bold text-gray-900 leading-tight">Transport</h2></div><p class="text-xs text-gray-600 font-medium mt-0.5">Rp190.000 spent · 38%</p></div></div><div class="text-right"><span class="text-xs font-semibold text-gray-900">Rp500.000</span><p class="text-[10px] text-gray-400 mt-0.5">allocated</p></div></div><div class="w-full bg-gray-200 h-1.5 rounded-full mt-3 overflow-hidden"><div class="bg-gray-800 h-full rounded-full" style="width: 38%;"></div></div><div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between"><span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full"><span class="">✓</span> ON PACE • 38% spent vs 63% cycle</span><span class="text-[10px] font-medium text-emerald-700">-25% buffer</span></div></article>
+<!-- Budget Item 3: Bensin -->
+<article class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm" data-purpose="budget-item"><div class="flex items-start justify-between"><div class="flex items-center space-x-3"><div class="w-9 h-9 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h6a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2zm10 2h3a2 2 0 012 2v6a1 1 0 002 0V9l-3-3m-6 3V7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div><div class="flex items-center gap-1.5"><h2 class="text-sm font-bold text-gray-900 leading-tight">Bensin</h2></div><p class="text-xs text-gray-600 font-medium mt-0.5">Rp208.000 spent · 52%</p></div></div><div class="text-right"><span class="text-xs font-semibold text-gray-900">Rp400.000</span><p class="text-[10px] text-gray-400 mt-0.5">allocated</p></div></div><div class="w-full bg-gray-200 h-1.5 rounded-full mt-3 overflow-hidden"><div class="bg-gray-800 h-full rounded-full" style="width: 52%;"></div></div><div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between"><span class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full"><span class="">✓</span> ON PACE • 52% spent vs 63% cycle</span><span class="text-[10px] font-medium text-emerald-700">-11% buffer</span></div></article>
+</section>
+<!-- END: BudgetItemList -->
+<!-- BEGIN: AddBudgetButton -->
+<div class="mt-6 flex justify-center">
+<button class="w-full py-3 px-4 border border-gray-200 rounded-2xl text-xs font-bold text-gray-800 bg-white hover:bg-gray-50 active:bg-gray-100 transition-colors flex items-center justify-center gap-1.5 shadow-sm" type="button"><svg class="w-3.5 h-3.5 stroke-current stroke-2" fill="none" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="">Add Budget</span></button>
+</div>
+<!-- END: AddBudgetButton -->
+</div>
+<!-- END: Scrollable Content Viewport -->
+<!-- BEGIN: BottomNavigation -->
+<nav class="absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-gray-100 px-3 pt-2 pb-6 z-40 flex justify-around items-center text-[10px]" data-purpose="bottom-tab-bar"><a class="flex flex-col items-center text-gray-400 hover:text-gray-600 transition-colors py-1 px-1.5" href="#"><svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="tracking-tight">Home</span></a><a class="flex flex-col items-center text-gray-400 hover:text-gray-600 transition-colors py-1 px-1.5" href="#"><svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="tracking-tight">Transactions</span></a><div class="flex items-center justify-center -mt-2"><button aria-label="Add transaction" class="w-9 h-9 rounded-full bg-gray-400 text-white flex items-center justify-center shadow-md active:scale-95 transition-transform" type="button"><svg class="w-5 h-5 stroke-white stroke-2" fill="none" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path></svg></button></div><a class="flex flex-col items-center text-gray-900 py-1 px-1.5 font-semibold" href="#"><svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="tracking-tight">Budget</span></a><a class="flex flex-col items-center text-gray-400 hover:text-gray-600 transition-colors py-1 px-1.5" href="#"><svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="tracking-tight">Planning</span></a><a class="flex flex-col items-center text-gray-400 hover:text-gray-600 transition-colors py-1 px-1.5" href="#"><svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="tracking-tight">Accounts</span></a></nav>
+<!-- END: BottomNavigation -->
+<!-- BEGIN: iOSHomeIndicator -->
+<div class="absolute bottom-1.5 inset-x-0 flex justify-center pointer-events-none z-50">
+<div class="w-32 h-1 bg-black rounded-full"></div>
+</div>
+<!-- END: iOSHomeIndicator -->
+</main>
+<!-- END: MobileDeviceFrame -->
+
+
+
+
+
+
+</body></html>
