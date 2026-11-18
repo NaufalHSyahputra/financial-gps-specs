@@ -1,6 +1,6 @@
 # Financial GPS
 
-Financial GPS is a personal finance application specification for recording actual transactions, explicitly allocating available money, understanding deterministic Safe to Spend, and forecasting future cash flow without treating expected income as cash already held. V1 targets Android and macOS using Kotlin Multiplatform and Compose Multiplatform, with a local-first SQLite/SQLDelight modular monolith.
+Financial GPS is a language- and stack-agnostic specification for a local-first personal finance application that records actual transactions, explicitly allocates available money, explains deterministic Safe to Spend, and forecasts future cash flow without treating expected income as cash already held.
 
 ## Start here
 

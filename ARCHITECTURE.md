@@ -4,21 +4,21 @@ This is the v1 implementation direction for the current specification repository
 
 ## 1. Topology & Module Boundaries
 
-Android and macOS are first-class v1 targets. Use Kotlin Multiplatform (KMP), Compose Multiplatform, and a **single-process, local-first modular monolith** on each device. SQLite is the local canonical database and SQLDelight provides typed access behind domain-facing ports. iOS, web, multi-device sync, microservices, external brokers and event sourcing are outside this baseline. Backup and restore are user-controlled portability, not sync.
+V1 uses a **single-process, local-first modular monolith**, independent of programming language, UI toolkit, database engine and target platform. Canonical data is stored locally in an ACID-compliant transactional database accessed behind repository interfaces. Multi-device sync, microservices, external brokers and event sourcing are outside this baseline. Backup and restore are user-controlled portability, not sync.
 
 ```text
-Android / macOS UI and platform adapters
-               ↓
-        App use-case layer
-               ↓
- Calendar | Ledger | Allocation / Budget | Commitments | Income | Intelligence
-               ↓                           ↓
-    deterministic domain rules       repository ports
-                                           ↓
-                               SQLDelight → local SQLite
+UI & platform adapters
+          ↓
+Application use-case layer
+          ↓
+Core domain modules & calculation engine
+          ↓
+Repository interfaces
+          ↓
+Local ACID-compliant database
 ```
 
-Arrows show dependencies, not separate services or a mandated package layout. Shared KMP code owns domain rules, calculation, validation and use-case orchestration. Platform adapters supply clock/instant, selected-zone services, file access, secure facilities and lifecycle integration; they do not own financial rules. Compose UI invokes use cases and displays their results, including unavailable or stale states; it does not calculate authoritative balances.
+The diagram shows logical interaction, not separate services or a mandated package layout. Domain and engine logic is pure and framework-free; it owns financial rules, calculations and domain validation. The application layer orchestrates use cases through repository interfaces; persistence implements those interfaces and provides transactional boundaries. Explicit adapters supply the system clock, IANA timezone conversion, secure storage, and file backup and restore, as well as any necessary lifecycle integration. Adapters do not own financial rules. The UI invokes use cases and displays their results, including unavailable or stale states; it does not calculate authoritative balances.
 
 | Module | Responsibility and boundary |
 |---|---|
@@ -29,13 +29,15 @@ Arrows show dependencies, not separate services or a mandated package layout. Sh
 | **Commitments** | Own obligations, recurring and staged rules, statements, installments and settlement validation. Coordinate payments and corrections with Ledger and Calendar. |
 | **Income** | Own expected-income occurrences and their lifecycle. Ledger owns posted actual income; an explicit user link coordinates both owners. |
 | **Forecast / Advisor** | Compute actual safety guidance and separate projections from authoritative inputs; produce deterministic explanations and insights. Assumptions never mutate actual facts. |
-| **App / UI** | Orchestrate commands across owners and render state; keep writes separate from queries logically, without separate databases. Provide user choices, preview, validation and conflict resolution. |
+| **Application use cases** | Orchestrate commands across owners through repository interfaces; keep writes separate from queries logically, without separate databases. |
+| **UI & platform adapters** | Render state and provide user choices, preview, validation and conflict resolution; adapt clock, timezone, secure storage and backup/restore services without owning financial rules. |
+| **Repository interfaces and persistence** | Provide access to canonical data and implement local ACID transactions across the required consistency boundary. |
 
 The app obtains an explicit evaluation instant from the platform clock and converts it using the user-selected IANA financial timezone (`Asia/Jakarta`, `Asia/Makassar`, or `Asia/Jayapura`). Calendar's pure resolver receives local dates; it does not read a hidden clock or device timezone. Financial time and audit/recording time are distinct. See [Calendar §§5–10](docs/archive/architecture/financial-calendar-tactical-ddd-v1.0.md#5-temporal-and-configuration-lifecycle).
 
 ## 2. Core Domain Entities & Proposed Data Model
 
-**Proposed, not implemented:** the following are conceptual persistence candidates, not approved SQL tables, columns, aggregate boundaries or migrations. Physical grouping, keys, indexes and cross-module contracts remain open under [Q-04–06 and AUD-LDG-001–009](DECISIONS.md#open--unresolved-questions-and-verification). Use stable identities, appropriate timestamps, provenance and referential integrity. Store canonical facts separately from optional rebuildable read models.
+**Proposed, not implemented:** the following are conceptual persistence candidates, not approved physical tables, fields, aggregate boundaries or migrations. Physical grouping, keys, indexes and cross-module contracts remain open under [Q-04–06 and AUD-LDG-001–009](DECISIONS.md#open--unresolved-questions-and-verification). Use stable identities, appropriate timestamps, provenance and referential integrity. Store canonical facts separately from optional rebuildable read models.
 
 | Candidate table or fact group | Purpose and conceptual relationships |
 |---|---|
@@ -83,7 +85,7 @@ The table names are illustrative. A relationship may require more than one recor
 
 - **Money and time:** IDR only in v1. Store and calculate canonical money as integer currency minor units, never floating point; apply explicit engine rounding. Entered transaction amounts are positive, with direction represented by transaction semantics; other domain amounts follow their specific validation. Use local financial dates and the configured IANA timezone for cycle behavior.
 - **Offline and integrity:** Local canonical writes and critical validation do not depend on a network, background handler or later synchronization. A failed mutation leaves state unchanged. Version and test migrations against representative prior data; protect referential integrity and reject incompatible data safely.
-- **Recovery:** Support explicit export, import, backup and restore. Validate version, compatibility and integrity before any authorized replacement or merge; failed restore must not corrupt existing canonical data. Preserve facts, effective times, relationships, ordering choices and audit as required. Test restore, not just backup creation. Format, merge/replacement and conflict behavior remain open under `Q-08`. Do not sync or copy an open live SQLite database as a sync strategy.
+- **Recovery:** Support explicit export, import, backup and restore. Validate version, compatibility and integrity before any authorized replacement or merge; failed restore must not corrupt existing canonical data. Preserve facts, effective times, relationships, ordering choices and audit as required. Test restore, not just backup creation. Format, merge/replacement and conflict behavior remain open under `Q-08`. Do not sync or copy an open live database file as a sync strategy.
 - **Security:** Encrypt sensitive user and financial data at rest using appropriate platform mechanisms. Validate imported and external data at the trusted boundary, use least-privilege file access, keep secrets out of source control, assess dependencies and avoid sensitive data in logs or crash reports. Any future client-server traffic containing sensitive data requires TLS 1.2+; authentication and authorization requirements apply if such a deployment is introduced.
 - **Privacy and analytics:** Collect only necessary data. By default analytics must not send exact balances, STS, transaction/income/obligation amounts, account or income-source names, merchant descriptions, free text, card/account numbers, credentials or precise location. Prefer categorical or bucketed properties and pseudonymous identifiers that are not authorization identifiers. Analytics is separate from operational diagnostics; disabling it or a failure must never block financial operations. Any `expected_income_linked_received` event follows an actual explicit link, never similarity or date arrival.
 - **Correctness and accessibility:** Run golden financial fixtures and relevant atomicity, concurrency, migration and restore tests; compare shared behavior across supported platforms. Never present a newly failed calculation as authoritative; a last-known value must be clearly stale and time-stamped. Do not convey financial state by color alone; controls need accessible names, sensible focus and keyboard operation where applicable.

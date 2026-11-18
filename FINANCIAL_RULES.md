@@ -1610,7 +1610,7 @@ This is not a technical failure and must not be silently converted to an invente
 | TD-CAL-037 | Repository load/normalization/migration/cache/re-persistence must not invent Domain Events. |
 | TD-CAL-038 | `ResolveFinancialCycle(requestedDate)` is the authoritative cycle query; consumers must not reconstruct cycles independently. |
 | TD-CAL-039 | Resolution returns explicit `Resolved(FinancialCycle)` or a domain outcome such as `CalendarHistoryUnavailable`, not ambiguous `null`. |
-| TD-CAL-040 | Primitive Calendar queries accept explicit `requestedDate`/`asOfDate`; current-date convenience use cases compose Clock + timezone outside the resolver. |
+| TD-CAL-040 | Primitive Calendar queries accept explicit `requestedDate`/`asOfDate`; current-date convenience use cases combine Clock + timezone outside the resolver. |
 | TD-CAL-041 | Query contracts expose purpose-specific DTO/read models, not mutable Aggregate internals or generic revision history. |
 | TD-CAL-042 | Financial Calendar owns authoritative `FinancialCyclePosition` derivation separate from `FinancialCycle`. |
 | TD-CAL-043 | Cycle-day counts use inclusive semantics; final-day `RemainingCycleDays = 1`. |
