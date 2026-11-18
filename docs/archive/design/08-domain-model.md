@@ -45,6 +45,7 @@ Fields: `account_id`, `name`, `account_class ASSET|LIABILITY`, generic `account_
 Invariants:
 - liability credit limit contributes zero Available Money;
 - archive preserves history/economic effect;
+- an asset opening balance is an effective-time snapshot; pre-snapshot transactions remain historical facts but do not apply again to that snapshot or subsequent balance (`FR-LDG-012`);
 - provider names are configuration/data, not engine logic.
 
 ## 4. Transaction — `DM-TRANSACTION-001`

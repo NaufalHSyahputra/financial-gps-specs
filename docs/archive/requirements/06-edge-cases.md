@@ -129,3 +129,39 @@ Unused budget                   Rp300,000
 At cycle close, no Rp300,000 transaction is created. If the unspent cash was Flexible, it remains Flexible. A template can create a new Rp1,500,000 budget with Spent=0.
 
 Every `EC-*` MUST map to automated domain/acceptance coverage where applicable.
+
+## Ledger clarification edge cases — CR-LDG-001
+
+| ID | Scenario | Required behavior | Type |
+|---|---|---|---|
+| `EC-LDG-001` | User attempts ordinary new entry against archived account | Require restoration first; history remains correctable and eligible archived money still counts. | REJECT / GUIDE |
+| `EC-LDG-002` | Expense exceeds tracked cash balance | Save truthful expense; show negative tracked balance; account contributes zero to Available while negative; surface allocation shortfall if present. | ACCEPT + SURFACE |
+| `EC-LDG-003` | Payment exceeds recorded liability outstanding | Reject without partial mutation and suggest checking missing or incorrect transactions. | REJECT |
+| `EC-LDG-004` | Partial linked refund | Reverse attributable eligible spending only; no duplicate ordinary income. | DERIVE |
+| `EC-LDG-005` | Transfer of Rp100,000 with Rp2,500 fee | Transfer principal is not spending; separately recognized fee expense is Rp2,500. | DERIVE |
+| `EC-LDG-006` | Actual transaction predates Calendar historical floor | Do not invent a cycle; mark affected cycle-dependent budget results unavailable. Mark affected cycle-based historical reports incomplete or unavailable. | ACCEPT + SURFACE |
+| `EC-LDG-007` | Rename/archive category used by historical transaction | Preserve reference; show current name and retain rename audit; hide archived category from ordinary new entry. | ACCEPT + SURFACE |
+| `EC-LDG-008` | User corrects or voids linked income | Show linked occurrence; obtain appropriate confirmation; preserve audit and update dependent records atomically. On unlink, use EXPECTED before expected time or MISSED after it; if intervening changes make the state unsafe to determine, require guided resolution without partial save. | ACCEPT + SURFACE |
+| `EC-LDG-009` | Unlinked refund later linked to original purchase | Before linking, increase receiving account and report separately without automatic budget change. After user confirms the link, recalculate attributable eligible spending with audit; no duplicate inflow. | ACCEPT + SURFACE |
+| `EC-LDG-010` | Transfer with fee is voided but fee really was charged | Suggest voiding both; permit keeping the fee after user review, preview effects and atomically commit the selected changes. | ACCEPT + SURFACE |
+| `EC-LDG-011` | Linked income removed after an intervening change makes expected state unsafe to determine | Show conflict and require guided resolution; commit no partial correction. | REJECT / GUIDE |
+| `EC-LDG-012` | Purchase Rp500,000 already has Rp300,000 linked refunds; attempt to link another Rp250,000 | Reject the link, explain Rp200,000 remains; no partial mutation. | REJECT |
+| `EC-LDG-013` | Edit a purchase to Rp200,000 when Rp300,000 of valid refunds are linked | Show conflict; require explicit resolution; do not partially commit or silently alter refunds. | REJECT / GUIDE |
+| `EC-LDG-014` | Refund to fully paid card would produce positive card credit | Explain unsupported representation; do not drop the credit or record an unreceived bank inflow. | SURFACE |
+| `EC-LDG-015` | Asset opening snapshot Rp1,000,000 on Nov 1; add Rp100,000 expense on Oct 25 | Retain the expense in history; do not subtract it from the Nov 1 snapshot or subsequent balance again. Historical budget eligibility remains governed by Calendar and Budget. | ACCEPT + SURFACE |
+| `EC-LDG-016` | Date-only transaction and asset opening snapshot have same date and no ordering times | Ask user whether before or after snapshot; preserve choice; include effect in subsequent balance only if after. | ACCEPT + SURFACE |
+| `EC-LDG-017` | Card outstanding Rp60,000; card refund Rp100,000 | Explain full refund cannot be represented as card credit; do not commit only Rp60,000 or discard Rp40,000; do not record unreceived bank refund. | REJECT / GUIDE |
+| `EC-LDG-018` | Correct an expense from Nov 2 to Oct 31, crossing a Nov 1 asset opening snapshot | Preview the impact; retain history and eligible budget effects but do not subtract the corrected pre-snapshot expense from the snapshot or subsequent balance. | ACCEPT + SURFACE |
+| `EC-LDG-019` | Correct a Rp500,000 credit purchase to Rp300,000 when a Rp500,000 payment exists | Show payment conflict; require explicit resolution before saving; preserve prior facts until a valid set of changes commits atomically. | REJECT / GUIDE |
+| `EC-LDG-020` | Edit an asset opening snapshot's amount or date | Preview current-balance impact and transactions whose relationship changes; retain prior snapshot in audit; ask before/after when same-day order is unclear; recalculate after confirmation. | ACCEPT + SURFACE |
+| `EC-LDG-021` | Credit-card debt Rp300,000 on Nov 5; Rp200,000 purchase Nov 10; enter Rp400,000 payment dated Nov 5 | Validate debt at payment time and affected later history; show conflict and require correction; no partial mutation or silently inferred ordering. | REJECT / GUIDE |
+| `EC-LDG-022` | Same-day date-only card purchase and payment can be valid in one order and invalid in another | Ask which occurred first, preserve choice, and validate against that order; no automatic guess or partial write. | ACCEPT + SURFACE |
+| `EC-LDG-023` | Recorded card debt immediately before an old payment is unknown | Show unknown history and guide user to provide or correct needed starting information before validation/save. Do not assume sufficient debt. | REJECT / GUIDE |
+| `EC-LDG-024` | Historical card debt is unknown and user provides an earlier known balance | Identify affected later transactions, preview impact and preserve prior information in audit; do not count debt twice. Compare against the later opening balance without adding the two; flag mismatch or indeterminate history. | ACCEPT + SURFACE |
+| `EC-LDG-025` | Editing a card transaction invalidates a previous same-day ordering choice | Revalidate affected history; retain the choice only if applicable, ask again if needed for payment validity, and prevent partial save on conflict. | ACCEPT + SURFACE |
+| `EC-LDG-026` | Earlier card debt Rp700,000 plus recorded intervening effects yields Rp950,000 at a later opening of Rp1,000,000 | Show Rp50,000 discrepancy; retain both recorded amounts, do not invent a transaction, and mark affected historical calculation incomplete/unavailable until resolved. | ACCEPT + SURFACE |
+| `EC-LDG-027` | Earlier card checkpoint and later opening lack sufficient intervening history or ordering for a reliable comparison | Show comparison as indeterminate; do not invent an exact difference or assume sufficient debt to validate an old payment. | ACCEPT + SURFACE |
+| `EC-LDG-028` | Card purchase and payment have the same explicit timestamp and order changes payment validity | Ask for and preserve the user's order; if unknown, return indeterminate and do not partially commit the operation requiring a definite result. | ACCEPT + SURFACE |
+| `EC-LDG-029` | Transaction and opening snapshot or historical checkpoint share an exact timestamp and the result depends on their order | Ask whether transaction is before or after the balance, preserve choice; if unknown return indeterminate. | ACCEPT + SURFACE |
+| `EC-LDG-030` | Equal-time events produce the same result in every applicable order | Do not ask for ordering solely for the tie; retain deterministic financial result. | DERIVE |
+| `EC-LDG-031` | User selects the same account as source and destination for a transfer | Reject without partial mutation and explain that source and destination must differ. | REJECT |

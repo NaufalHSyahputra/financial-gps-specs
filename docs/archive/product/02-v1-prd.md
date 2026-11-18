@@ -101,3 +101,9 @@ A developer/AI agent can determine without guessing:
 ## 6. Non-Goals
 
 See `03-v1-scope.md`. No LLM chatbot, crypto/investment portfolio, bill splitting, advanced accounting, or speculative feature expansion is required.
+
+## Ledger product clarification — CR-LDG-001
+
+The product owner approved the V1 Ledger clarifications in [CR-LDG-001](../readiness/ledger-product-decisions.md), including archive, adjustments, corrections, negative tracked balances, overpayment, refunds, categories, historical entry and transfer fees. See `FR-LDG-001`–`FR-LDG-008` for operative behavior and explicitly unresolved details.
+
+Owner-approved [CR-LDG-007](../readiness/ledger-product-decisions.md) clarifies how an earlier credit-card debt checkpoint is compared with a later opening balance and how discrepancies are surfaced.

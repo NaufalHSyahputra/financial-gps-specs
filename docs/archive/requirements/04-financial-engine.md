@@ -17,7 +17,7 @@ realized balances                         starts from actual state
 = current financial guidance              = projected future position
 ```
 
-`RULE-STATE-001`: A future Expected Income MUST NOT increase Account Balance, Available Money, Flexible Money, Budget Remaining, Raw STS, Displayed STS, or Daily STS before an actual Income transaction is explicitly linked and the occurrence becomes `RECEIVED`.
+`RULE-STATE-001`: A future Expected Income assumption MUST NOT itself increase Account Balance, Available Money, Flexible Money, Budget Remaining, Raw STS, Displayed STS, or Daily STS. A posted actual Income affects actual account state whether or not the user explicitly links an Expected Income occurrence. Only an explicit link marks an eligible occurrence `RECEIVED`; actual newly available money remains Unallocated unless explicitly allocated. This wording reconciles `FR-TRX-002`, `FR-INC-003` and `RULE-FCST-103A` without changing their approved behavior.
 
 `RULE-STATE-002`: Forecast outputs MUST identify assumptions separately from actual facts.
 
@@ -49,10 +49,11 @@ When a timestamp is supplied, use its resolved instant in the Financial Timezone
 For asset account `a`:
 
 ```text
-AssetBalance(a,t) = OpeningBalance(a) + Σ posted realized transaction legs affecting a through t
+AssetBalance(a,t) = OpeningBalance(a) + Σ posted realized transaction legs affecting a after the opening snapshot and through t
+  (for t at or after the opening snapshot)
 ```
 
-Voided legs have zero current effect.
+Voided legs have zero current effect. The opening balance is a snapshot at an effective financial time. Pre-snapshot transactions are retained for history and eligible budget calculations but MUST NOT be applied again to the snapshot or subsequent balance. A balance before the opening snapshot is not inferred from the snapshot. When a date-only transaction and snapshot share a date and no times establish their ordering, obtain the user’s explicit before/after choice; include the transaction effect in the subsequent balance only when the user says after. Preserve the choice for deterministic recomputation. When a transaction correction crosses the snapshot boundary, re-evaluate its effect against the corrected position and recalculate affected eligible budget results; preview the impact and preserve audit. When editing the opening snapshot amount or effective date, preview current-balance impact and transactions whose relation changes, preserve the prior snapshot in audit, obtain confirmation, and recalculate affected results. Request the user’s before/after choice when applicable.
 
 ### `RULE-BAL-002` Liability outstanding
 For liability account `l`:
@@ -61,13 +62,14 @@ For liability account `l`:
 LiabilityOutstanding(l,t)
 = max(0,
     OpeningLiability(l)
-  + recognized purchases/principal
-  + recognized fees/interest
-  - posted liability payments
-  - liability-reducing refunds/credits)
+  + recognized purchases/principal after the later opening through t
+  + recognized fees/interest after the later opening through t
+  - posted liability payments after the later opening through t
+  - liability-reducing refunds/credits after the later opening through t)
+  (for t at or after the later opening)
 ```
 
-Unused credit limit is excluded.
+An earlier historical checkpoint is not added to the later opening. Its comparison with that opening follows `RULE-LDG-005`; equal timestamps that affect the result use the user ordering under `RULE-LDG-006`. The concrete ordering representation and stale-choice handling require tactical review. Do not infer a historical result when required facts or order are unavailable. Unused credit limit is excluded.
 
 **Negative/zero:** floor at zero unless a separate positive asset/credit-balance representation is explicitly supported.  
 **Recalculate:** purchase, fee/interest, refund, payment, void/edit, opening adjustment.
@@ -583,3 +585,25 @@ Forecast explanations MUST label actual starting state separately from assumed f
 - `RULE-CLOSE-005`: `EXPECTED_STABLE` enters Base Forecast; `EXPECTED_UNCERTAIN` enters only selected Scenario Forecasts; neither increases current STS.
 - `RULE-CLOSE-006`: numeric Budget projection is unavailable before 3 elapsed cycle days.
 - `RULE-CLOSE-007`: Funding Dependency is derived from Forecast primitives and never mutates Actual state.
+
+## 23. Ledger behavior clarifications — CR-LDG-001
+
+These owner-approved product clarifications supplement the existing formulas; see [decision record](../readiness/ledger-product-decisions.md).
+
+### `RULE-LDG-001` Negative tracked asset balance
+A truthful asset-funded expense may produce a negative tracked asset balance. Display the negative balance and surface the need for review. `RULE-AVAILABLE-001` still includes `max(0, AssetBalance)` for each eligible account. Recompute allocation consistency; an allocation shortfall makes authoritative STS/Daily STS unresolved under `RULE-ALLOC-102` and `RULE-STS-103`. This does not create an overdraft facility.
+
+### `RULE-LDG-002` Payment above outstanding
+Reject a new liability payment greater than recorded Liability Outstanding. For a backdated credit-card payment, validate the recorded debt at its financial time and the affected later history; if unsupported positive card credit results at any affected point, show the conflict and require correction without partial mutation. For date-only credit-card transactions sharing a date, when ordering affects payment validity obtain and preserve the user’s ordering choice instead of assuming an order. When recorded debt immediately before an old payment is unknown, surface it and require necessary starting information before validating/saving; never assume sufficient debt. No asset or liability mutation is committed on rejection. This V1 rule does not create a credit-balance asset; existing liability flooring is not a license to discard excess payment. A proposed backdated credit-purchase correction that would make an existing payment exceed recorded debt must be held for explicit conflict resolution without partially changing records or silently reducing the payment. A card refund greater than outstanding cannot be represented in full as a card credit in V1: explain the limitation and do not commit only the covered amount, discard the excess or record an unreceived bank refund.
+
+### `RULE-LDG-003` Adjustment, refund and fee classification
+An explained balance adjustment changes actual account state without automatic ordinary income, expense or category classification. A linked refund reverses only attributable eligible expense/Budget Spent and must not become duplicate income. An optional transfer fee is a separately recognized fee expense; the transfer principal is not income, expense or Budget Spent. An unlinked refund increases the receiving account but is reported separately from ordinary income and expense and does not automatically change any category budget. Once explicitly linked after user confirmation, recompute only attributable eligible Budget Spent and retain audit history. Display balance adjustments separately in reports and use the corrected actual state as the forecast starting point. Transfer and fee corrections apply the user-confirmed effects atomically.
+
+### `RULE-LDG-004` Before calendar historical floor
+Actual Ledger facts may predate the Financial Calendar historical floor. Calendar resolution before that floor remains `CalendarHistoryUnavailable`; no cycle may be inferred. Affected cycle-dependent budget results for the date are unavailable; affected cycle-based historical reports are marked incomplete or unavailable; show the transaction and account effect without inventing history.
+
+### `RULE-LDG-005` Earlier credit-card debt checkpoint
+An earlier known card-debt amount at an effective time is a historical checkpoint. It is not added to the existing later opening liability; the later opening remains the starting point for that point and subsequent balances. For comparison, use the earlier checkpoint and applicable realized intervening effects under established financial-time ordering, and compare the resulting debt at the later opening with that recorded opening balance. If both values are determinable and differ, surface the difference and mark the affected historical calculation incomplete or unavailable until the discrepancy is resolved; never silently change a checkpoint or generate a transaction. If history or ordering is insufficient to compute the comparison, mark it indeterminate rather than reporting an invented numerical discrepancy. Existing `RULE-LDG-002` payment-time validation remains in force: unknown debt cannot validate an old payment. Storage representation, same-instant ordering, and exact comparison interval semantics require tactical review; these do not authorize double counting.
+
+### `RULE-LDG-006` Equal-time financial ordering
+When realized financial facts have equal explicit timestamps and their ordering affects a result, require and preserve the user's explicit ordering; this includes a transaction tied with an asset opening snapshot or historical card checkpoint. Do not invent extra timestamp precision or infer order from IDs, insertion order or processing order. When the order cannot change the result, no user ordering is needed solely for the tie. If the user cannot determine a required order, return an indeterminate result; do not commit a mutation that requires a definite result. Revalidate the stored choice when affected facts change. Existing date-only ordering rules remain applicable. See CR-LDG-008.

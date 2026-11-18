@@ -82,3 +82,7 @@ Advisor/Insights appears contextually inside Home, Budget, and Planning; it has 
 - Do not count transfers as spending.
 - Do not count credit/BNPL repayment as the original purchase expense again.
 - Do not require full financial-life configuration during onboarding.
+
+## Ledger product clarification — CR-LDG-001
+
+The product owner approved the V1 Ledger clarifications in [CR-LDG-001](../readiness/ledger-product-decisions.md), including archive, adjustments, corrections, negative tracked balances, overpayment, refunds, categories, historical entry and transfer fees. See `FR-LDG-001`–`FR-LDG-008` for operative behavior and explicitly unresolved details.
